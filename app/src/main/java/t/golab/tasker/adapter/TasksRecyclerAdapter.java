@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringDef;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
 import t.golab.tasker.EspressoIdlingResource;
@@ -29,7 +32,6 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
     private ArrayList<Task> mTasks;
     private OnMaterialButtonClick onMaterialButtonClick;
     private int clickedPosition;
-
 
     public TasksRecyclerAdapter(ArrayList<Task> tasks, OnMaterialButtonClick onMaterialButtonClick) {
         this.onMaterialButtonClick = onMaterialButtonClick;

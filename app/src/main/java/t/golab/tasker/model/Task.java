@@ -1,5 +1,9 @@
 package t.golab.tasker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.StringDef;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -12,7 +16,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.Objects;
 
 @Entity(tableName = "tasks")
-public class Task {
+public class Task implements Parcelable {
 
     public static final String OPEN = "OPEN";
     public static final String TRAVELLING = "TRAVELLING";
@@ -22,6 +26,36 @@ public class Task {
     @Retention(RetentionPolicy.SOURCE)
     public @interface Status{}
 
+    protected Task(Parcel in) {
+        name = in.readString();
+        status = in.readString();
+        id = in.readInt();
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(status);
+        parcel.writeInt(id);
+    }
+
     @ColumnInfo(name = "name")
     private String name;
     @ColumnInfo(name = "status")
@@ -29,14 +63,27 @@ public class Task {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    public Task(String name, int id, @Status String status) {
+    @Ignore
+    public Task(@NonNull String name, int id, @Status String status) {
         this.name = name;
         this.id = id;
         this.status = status;
     }
 
+    public Task(@NonNull String name, @Status String status) {
+        this.name = name;
+        this.status = status;
+    }
+
     @Ignore
     public Task() {
+    }
+
+    @Ignore
+    public Task(Task task) {
+        id = task.id;
+        name = task.name;
+        status = task.status;
     }
 
     @Override
@@ -49,18 +96,15 @@ public class Task {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return id == task.id &&
-                Objects.equals(name, task.name) &&
-                status == task.status;
-    }
+    public boolean equals(Object obj) {
+        if(obj == null){
+            return false;
+        }
+        if(getClass() != obj.getClass())
+            return false;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, status, id);
+        Task task = (Task) obj;
+        return task.getId() == getId() && task.getIdString().equals(getIdString()) && task.getName().equals(getName());
     }
 
     public String getName() {
