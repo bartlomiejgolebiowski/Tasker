@@ -15,6 +15,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
+import t.golab.tasker.EspressoIdlingResource;
 import t.golab.tasker.MainActivity;
 import t.golab.tasker.R;
 import t.golab.tasker.model.Task;
@@ -66,15 +67,21 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
         switch (mTasks.get(position).getStatus()) {
             case Task.OPEN:
                 holder.materialButton.setText(R.string.startTravelling);
+                EspressoIdlingResource.INSTANCE.increment();
                 holder.itemView.setBackgroundResource(R.drawable.shape_open);
+                EspressoIdlingResource.INSTANCE.decrement();
                 break;
             case Task.TRAVELLING:
                 holder.materialButton.setText(R.string.startWorking);
+                EspressoIdlingResource.INSTANCE.increment();
                 holder.itemView.setBackgroundResource(R.drawable.shape_travelling);
+                EspressoIdlingResource.INSTANCE.decrement();
                 break;
             case Task.WORKING:
                 holder.materialButton.setText(R.string.stop);
+                EspressoIdlingResource.INSTANCE.increment();
                 holder.itemView.setBackgroundResource(R.drawable.shape_working);
+                EspressoIdlingResource.INSTANCE.decrement();
                 break;
         }
     }

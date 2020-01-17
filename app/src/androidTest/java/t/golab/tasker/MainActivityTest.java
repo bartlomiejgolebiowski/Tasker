@@ -12,6 +12,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
@@ -24,12 +25,16 @@ import com.google.android.material.button.MaterialButton;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.withResourceName;
+import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.IsNot.not;
 
 
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,17 +50,14 @@ public class MainActivityTest {
         return new RecyclerViewMatcher(recyclerViewId);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MainActivityTest that = (MainActivityTest) o;
-        return Objects.equals(activityRule, that.activityRule);
+    @Before
+    public void registerIdlingResources(){
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(activityRule);
+    @After
+    public void unregisterIdlingResources(){
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource);
     }
 
     @Rule
@@ -65,20 +67,14 @@ public class MainActivityTest {
     public void test_isActivityInView() {
         MainActivity.isTesting = true;
         onView(withId(R.id.main)).check(matches(isDisplayed()));
-
-    }
-
-    @Test
-    public void test_isRecyclerView() {
-        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
     }
 
     @Test
     public void test_button_isClickable_isEnabled_checkTexts(){
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()));
         onView(withRecyclerView(R.id.recyclerView).atPositionOnView(0, R.id.button)).perform(click());
         onView(withRecyclerView(R.id.recyclerView).atPositionOnView(0, R.id.button)).check(matches(withText(R.string.startWorking)));
         onView(withRecyclerView(R.id.recyclerView).atPositionOnView(2, R.id.button)).check(matches(not(isEnabled())));
-        onView(withRecyclerView(R.id.recyclerView).atPositionOnView(0, R.id.status)).check(matches(withText(Task.TRAVELLING)));
         onView(withRecyclerView(R.id.recyclerView).atPositionOnView(0, R.id.status)).check(matches(withText(Task.TRAVELLING)));
         onView(withRecyclerView(R.id.recyclerView).atPositionOnView(0, R.id.button)).perform(click());
         onView(withRecyclerView(R.id.recyclerView).atPositionOnView(0, R.id.button)).check(matches(withText(R.string.stop)));
