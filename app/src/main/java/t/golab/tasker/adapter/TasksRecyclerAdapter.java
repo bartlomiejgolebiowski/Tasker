@@ -65,15 +65,15 @@ public class TasksRecyclerAdapter extends RecyclerView.Adapter<TasksRecyclerAdap
 
         switch (mTasks.get(position).getStatus()) {
             case Task.OPEN:
-                holder.materialButton.setText("START TRAVELLING");
+                holder.materialButton.setText(R.string.startTravelling);
                 holder.itemView.setBackgroundResource(R.drawable.shape_open);
                 break;
             case Task.TRAVELLING:
-                holder.materialButton.setText("START WORKING");
+                holder.materialButton.setText(R.string.startWorking);
                 holder.itemView.setBackgroundResource(R.drawable.shape_travelling);
                 break;
             case Task.WORKING:
-                holder.materialButton.setText("STOP");
+                holder.materialButton.setText(R.string.stop);
                 holder.itemView.setBackgroundResource(R.drawable.shape_working);
                 break;
         }

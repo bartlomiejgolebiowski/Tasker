@@ -1,22 +1,16 @@
 package t.golab.tasker;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import androidx.annotation.StringDef;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -36,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerAdap
     private Repository mRepository;
     public static SharedPreferences mSharedPreferences;
     private ProgressBar progressBar;
+    protected static boolean isTesting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +45,6 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerAdap
         mRepository = new Repository(this);
         initializeRecyclerView();
         downloadTasks();
-        if(mTasks.isEmpty()){
-            fake();
-        }
     }
 
     @Override
@@ -76,11 +68,16 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerAdap
         mRepository.downloadTasks().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
+                if(tasks.size() == 0){
+                    fake();
+                }
                 if (mTasks.size() > 0) {
                     mTasks.clear();
                 }
-                if (tasks != null) {
-                    mTasks.addAll(tasks);
+                mTasks.addAll(tasks);
+                if(isTesting){
+                    changeStatusToTest(tasks);
+                    isTesting = false;
                 }
                 mTasksRecyclerAdapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerAdap
         });
     }
 
-    public static int random(int min, int max) {
+    public int random(int min, int max) {
         Random generator = new Random();
         if (min >= max) {
             throw new IllegalArgumentException("max must be greater than min");
@@ -102,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerAdap
             task.setName("No_Name" + i*random(0, i+1));
             task.setStatus(Task.OPEN);
             saveNewTask(task);
-
         }
     }
 
@@ -113,6 +109,16 @@ public class MainActivity extends AppCompatActivity implements TasksRecyclerAdap
         mRecyclerView.setAdapter(mTasksRecyclerAdapter);
     }
 
+
+
+    public void changeStatusToTest(List<Task> task){
+        if(!task.isEmpty()){
+            int position = mSharedPreferences.getInt("pos", 0);
+            Log.d(TAG, "changeStatusToTest pos: " + position);
+            task.get(position).setStatus(Task.OPEN);
+            updateTask(task.get(position));
+        }
+    }
 
 
     @Override

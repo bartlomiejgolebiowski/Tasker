@@ -1,94 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:gravity="center_horizontal"
-    android:weightSum="100"
-    android:layout_marginHorizontal="10dp"
-    android:animateLayoutChanges="true"
-    android:layout_marginTop="8dp"
-    android:background="@drawable/shape_open"
+    android:id="@+id/main"
     tools:context=".MainActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:title="Tasks"
+            app:titleTextColor="@color/white">
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/recyclerView"
+        android:padding="5dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_weight="97"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/idText"
-            android:lines="1"
-            android:textColor="@color/black"
-            android:text="@string/id"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00000"
-            android:id="@+id/id"
-            android:layout_toEndOf="@+id/idText"
-            android:textSize="15sp"
-            android:layout_marginStart="4dp"/>
-        <TextView
-            android:layout_below="@+id/idText"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/nameText"
-            android:lines="1"
-            android:textColor="@color/black"
-            android:text="@string/name"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TEXT"
-            android:id="@+id/name"
-            android:layout_below="@+id/id"
-            android:layout_toEndOf="@+id/nameText"
-            android:textSize="15sp"
-            android:layout_marginStart="4dp"/>
-
-        <TextView
-            android:layout_below="@+id/nameText"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/statusText"
-            android:lines="1"
-            android:textColor="@color/black"
-            android:text="@string/status"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="STATUS"
-            android:id="@+id/status"
-            android:layout_below="@+id/name"
-            android:layout_toEndOf="@+id/nameText"
-            android:textSize="15sp"
-            android:layout_marginStart="4dp"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:backgroundTint="@color/colorPrimaryDark"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:clickable="true"
-            android:layout_marginEnd="8dp"
-            android:focusable="true" />
-
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
