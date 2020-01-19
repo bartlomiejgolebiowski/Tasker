@@ -8,7 +8,7 @@ import t.golab.tasker.room.Dao;
 
 public class DeleteAllTasks extends AsyncTask<Void, Void, Void>{
 
-    private static final String TAG = "InsertTask";
+    private static final String TAG = "DeleteAllTasks";
 
     private Dao mDao;
 
@@ -18,6 +18,7 @@ public class DeleteAllTasks extends AsyncTask<Void, Void, Void>{
 
     @Override
     protected Void doInBackground(Void... voids) {
+        Log.d(TAG, "doInBackground: " + Thread.currentThread().getName());
         mDao.deleteAll();
         return null;
     }

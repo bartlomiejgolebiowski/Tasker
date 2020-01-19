@@ -8,7 +8,7 @@ import t.golab.tasker.room.Dao;
 
 public class UpdateTask extends AsyncTask<Task, Void, Void>{
 
-    private static final String TAG = "InsertTask";
+    private static final String TAG = "UpdateTask";
 
     private Dao mDao;
 
