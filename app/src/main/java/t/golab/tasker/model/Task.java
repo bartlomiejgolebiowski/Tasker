@@ -11,6 +11,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Objects;
@@ -58,19 +60,20 @@ public class Task implements Parcelable {
 
     @ColumnInfo(name = "name")
     private String name;
+    @NonNull
     @ColumnInfo(name = "status")
     private @Status String status;
     @PrimaryKey(autoGenerate = true)
     private int id;
 
     @Ignore
-    public Task(@NonNull String name, int id, @Status String status) {
+    public Task(String name, int id, @NotNull @Status String status) {
         this.name = name;
         this.id = id;
         this.status = status;
     }
 
-    public Task(@NonNull String name, @Status String status) {
+    public Task(String name, @NotNull @Status String status) {
         this.name = name;
         this.status = status;
     }
